@@ -34,6 +34,9 @@ export class SheduleController{
         try {
             const {bus_id, driver_id, flight_id, time_from, time_to,} = req.body;
 
+            console.log(time_from);
+            console.log(time_to);
+
             const bus = await busRepository.findOne({
                 where : {id: bus_id}
             });
@@ -56,13 +59,7 @@ export class SheduleController{
         
             return res.status(200).json(schedule);
         } catch (e) {
-            if(e.message === "Driver has not category"){
-                return res.status(403).json({message : "У водителя нет нужной категории"})
-            }
-            if(e.message === "Time is not valid"){
-                return res.status(403).json({message : "У водителя уже есть рейс в это время"})
-            }
-            return res.status(400).json({message : "error during creating log"})
+            return res.status(400).json({message : e.message})
         }
     }
 }

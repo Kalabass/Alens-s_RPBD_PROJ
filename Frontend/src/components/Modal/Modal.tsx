@@ -8,6 +8,7 @@ import { ICategory } from "../interfaces/Category.Interfaces";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import ScheduleService from "../../services/Schedule.Service";
 import { IScheduleBody } from "../interfaces/Schedule.Interfaces";
+import moment from 'moment-timezone';
 
 const StyledModal = styled.div`
     position: absolute;
@@ -130,14 +131,7 @@ const Modal:React.FC = () => {
     const query_client = useQueryClient();
 
     const onErrorHandler = (error: Error) => {
-        if(error.response.data.message == "У водителя нет нужной категории"){
-            alert(error.response.data.message);
-            return;
-        }
-        if(error.response.data.message == "У водителя уже есть рейс в это время"){
-            alert(error.response.data.message);
-            return;
-        }
+        alert(error.response.data.message);
     }
 
     const AddMutation = useMutation({
@@ -151,7 +145,7 @@ const Modal:React.FC = () => {
         let [hours, minutes] = inputValueFrom.split(":");
         const newTimeFrom = new Date();
         newTimeFrom.setHours(Number(hours));
-        newTimeFrom.setMinutes(Number(minutes));
+        newTimeFrom.setMinutes(Number(minutes) );
 
         [hours, minutes] = inputValueTo.split(":");
         const newTimeTo = new Date();
